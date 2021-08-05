@@ -65,7 +65,11 @@ public class JDTReviewJob extends Job {
 						SuppressWarningsAnnotationVisitor suppressWarningVisitor = new SuppressWarningsAnnotationVisitor();
 						// Visit the annotation nodes to check for suppress warning occurrences.
 						astNodeUnit.accept(suppressWarningVisitor);
+						
+						// Clear previous markers.
+						deleteExistingMarkers(unit);
 
+						// Check and add markers for review violation.
 						markSuppressWarningViolations(unit, astNodeUnit, suppressWarningVisitor);
 					}
 				}
@@ -76,6 +80,18 @@ public class JDTReviewJob extends Job {
 		}
 
 		return Status.OK_STATUS;
+	}
+
+	private void deleteExistingMarkers(ICompilationUnit unit) {
+		try {
+			for (IMarker marker : unit.getResource().findMarkers(IMarker.MARKER, true, 1)) {
+				if (((String) marker.getAttribute(IMarker.MESSAGE)).startsWith("Suppress Warning")) {
+					marker.delete();
+				}
+			}
+		} catch (CoreException e) {
+			logger.error("Exception occured in JDTReviewJob marker deletion :", e);
+		}
 	}
 
 	private void markSuppressWarningViolations(ICompilationUnit unit, final ASTNode astNodeUnit,
@@ -89,8 +105,7 @@ public class JDTReviewJob extends Job {
 			for (SingleMemberAnnotation warningAnnotation : suppressWarningVisitor.getWarnings()) {
 
 				try {
-					int lineNumber = ((CompilationUnit) astNodeUnit).getLineNumber(warningAnnotation.getStartPosition())
-							- 1;
+					int lineNumber = ((CompilationUnit) astNodeUnit).getLineNumber(warningAnnotation.getStartPosition());
 
 					IMarker marker = unit.getResource().createMarker(IMarker.MARKER);
 					marker.setAttribute(IMarker.MESSAGE, "Suppress Warning annotation "
