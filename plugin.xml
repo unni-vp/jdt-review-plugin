@@ -5,18 +5,18 @@
    <extension
          point="org.eclipse.ui.commands">
       <category
-            id="org.unni-vp.jdt-static-analysis.commands.JDTReviewCategory"
+            id="org.unnivp.jdtstaticanalysis.commands.JDTReviewCategory"
             name="JDT Review">
       </category>
       <command
-            categoryId="org.unni-vp.jdt-static-analysis.commands.JDTReviewCategory"
+            categoryId="org.unnivp.jdtstaticanalysis.commands.JDTReviewCategory"
             name="Source Code Stats"
-            id="org.unni-vp.jdt-static-analysis.commands.SourceCountCommand">
+            id="org.unnivp.jdtstaticanalysis.commands.SourceCountCommand">
       </command>
       <command
-            categoryId="org.unni-vp.jdt-static-analysis.commands.JDTReviewCategory"
+            categoryId="org.unnivp.jdtstaticanalysis.commands.JDTReviewCategory"
             name="Suppress Warning Stats"
-            id="org.unni-vp.jdt-static-analysis.commands.SuppressWarningAnnotationCommand">
+            id="org.unnivp.jdtstaticanalysis.commands.SuppressWarningAnnotationCommand">
       </command>
    </extension>
    
@@ -24,18 +24,18 @@
          point="org.eclipse.ui.handlers">
       <handler
             class="org.unnivp.jdtstaticanalysis.handlers.SourceCodeCountHandler"
-            commandId="org.unni-vp.jdt-static-analysis.commands.SourceCountCommand">
+            commandId="org.unnivp.jdtstaticanalysis.commands.SourceCountCommand">
       </handler>
       <handler
             class="org.unnivp.jdtstaticanalysis.handlers.SuppressWarningAnnotationHandler"
-            commandId="org.unni-vp.jdt-static-analysis.commands.SuppressWarningAnnotationCommand">
+            commandId="org.unnivp.jdtstaticanalysis.commands.SuppressWarningAnnotationCommand">
       </handler>
    </extension>
    
    <extension
          point="org.eclipse.ui.bindings">
       <key
-            commandId="org.unni-vp.jdt-static-analysis.commands.JDTReviewBindingCommand"
+            commandId="org.unnivp.jdtstaticanalysis.commands.JDTReviewBindingCommand"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             contextId="org.eclipse.ui.contexts.window"
             sequence="M1+6">
@@ -47,17 +47,17 @@
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu?after=additions">
          <menu
-               id="org.unni-vp.jdt-static-analysis.menus.JDTReviewMenu"
+               id="org.unnivp.jdtstaticanalysis.menus.JDTReviewMenu"
                label="JDT Review"
                mnemonic="M">
             <command
-                  commandId="org.unni-vp.jdt-static-analysis.commands.SourceCountCommand"
-                  id="org.unni-vp.jdt-static-analysis.menus.SourceCountMenuCommand"
+                  commandId="org.unnivp.jdtstaticanalysis.commands.SourceCountCommand"
+                  id="org.unnivp.jdtstaticanalysis.menus.SourceCountMenuCommand"
                   mnemonic="C">
             </command>
             <command
-                  commandId="org.unni-vp.jdt-static-analysis.commands.SuppressWarningAnnotationCommand"
-                  id="org.unni-vp.jdt-static-analysis.menus.SuppressWarningAnnotationMenuCommand"
+                  commandId="org.unnivp.jdtstaticanalysis.commands.SuppressWarningAnnotationCommand"
+                  id="org.unnivp.jdtstaticanalysis.menus.SuppressWarningAnnotationMenuCommand"
                   mnemonic="S">
             </command>
          </menu>
@@ -65,16 +65,16 @@
       <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
          <toolbar
-               id="org.unni-vp.jdt-static-analysis.toolbars.JDTReviewToolbar">
+               id="org.unnivp.jdtstaticanalysis.toolbars.JDTReviewToolbar">
             <command
-                  id="org.unni-vp.jdt-static-analysis.toolbars.SourceCountToolbarCommand"
-                  commandId="org.unni-vp.jdt-static-analysis.commands.SourceCountCommand"
+                  id="org.unnivp.jdtstaticanalysis.toolbars.SourceCountToolbarCommand"
+                  commandId="org.unnivp.jdtstaticanalysis.commands.SourceCountCommand"
                   icon="icons/source_code.png"
                   tooltip="Source Code Stats">
             </command>
             <command
-                  id="org.unni-vp.jdt-static-analysis.toolbars.SuppressWarningAnnotationToolbarCommand"
-                  commandId="org.unni-vp.jdt-static-analysis.commands.SuppressWarningAnnotationCommand"
+                  id="org.unnivp.jdtstaticanalysis.toolbars.SuppressWarningAnnotationToolbarCommand"
+                  commandId="org.unnivp.jdtstaticanalysis.commands.SuppressWarningAnnotationCommand"
                   icon="icons/suppress_warning.png"
                   tooltip="Suppress Warning Stats">
             </command>

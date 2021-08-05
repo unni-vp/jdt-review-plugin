@@ -1,4 +1,4 @@
-package org.unni_vp.jdt_static_analysis;
+package org.unnivp.jdtstaticanalysis;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
