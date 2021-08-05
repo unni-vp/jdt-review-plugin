@@ -11,12 +11,12 @@
       <command
             categoryId="JDTReviewCategory"
             name="Run JDT Review"
-            id="SourceCountCommand">
+            id="JDTReviewCommand">
       </command>
       <command
             categoryId="JDTReviewCategory"
-            name="Suppress Warning Stats"
-            id="SuppressWarningAnnotationCommand">
+            name="Get Workspace Stats"
+            id="SourceCountCommand">
       </command>
    </extension>
    
@@ -24,11 +24,11 @@
          point="org.eclipse.ui.handlers">
       <handler
             class="org.unnivp.jdtstaticanalysis.handlers.JDTReviewHandler"
-            commandId="SourceCountCommand">
+            commandId="JDTReviewCommand">
       </handler>
       <handler
-            class="org.unnivp.jdtstaticanalysis.handlers.SuppressWarningAnnotationHandler"
-            commandId="SuppressWarningAnnotationCommand">
+            class="org.unnivp.jdtstaticanalysis.handlers.SourceCodeCountHandler"
+            commandId="SourceCountCommand">
       </handler>
    </extension>
    
@@ -39,15 +39,15 @@
          <menu
                id="JDTReviewMenu"
                label="JDT Review"
-               mnemonic="M">
+               mnemonic="J">
+            <command
+                  commandId="JDTReviewCommand"
+                  id="JDTReviewMenuItem"
+                  mnemonic="R">
+            </command>
             <command
                   commandId="SourceCountCommand"
                   id="SourceCountMenuItem"
-                  mnemonic="C">
-            </command>
-            <command
-                  commandId="SuppressWarningAnnotationCommand"
-                  id="SuppressWarningAnnotationMenuItem"
                   mnemonic="S">
             </command>
          </menu>
@@ -57,17 +57,17 @@
          <toolbar
                id="JDTReviewToolbar">
             <command
+                  id="JDTReviewToolbarItem"
+                  commandId="JDTReviewCommand"
+                  icon="icons/suppress_warning.png"
+                  tooltip="Run JDT Review">
+            </command>
+            <command
                   id="SourceCountToolbarItem"
                   commandId="SourceCountCommand"
                   icon="icons/source_code.png"
-                  tooltip="Source Code Stats">
-            </command>
-            <command
-                  id="SuppressWarningAnnotationToolbarItem"
-                  commandId="SuppressWarningAnnotationCommand"
-                  icon="icons/suppress_warning.png"
-                  tooltip="Suppress Warning Stats">
-            </command>
+                  tooltip="Get Workspace Stats">
+            </command> 
          </toolbar>
       </menuContribution>
    </extension>
