@@ -20,10 +20,17 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Async job to review entire workspace for custom violations.
+ * 
+ * @author unni-vp
+ *
+ */
 public class JDTReviewJob extends Job {
 
 	private static final Logger logger = LoggerFactory.getLogger(JDTReviewJob.class);
@@ -59,21 +66,7 @@ public class JDTReviewJob extends Job {
 						// Visit the annotation nodes to check for suppress warning occurrences.
 						astNodeUnit.accept(suppressWarningVisitor);
 
-						if (suppressWarningVisitor.getWarnings() != null) {
-							logger.info(" Suppress Warning violations found in " + unit.getElementName() + " : "
-									+ suppressWarningVisitor.getWarnings().size());
-							for (SingleMemberAnnotation warningAnnotation : suppressWarningVisitor.getWarnings()) {
-
-								try {
-									IMarker marker = unit.getResource().createMarker(IMarker.PROBLEM);
-									marker.setAttribute(IMarker.MESSAGE,
-											"Suppress Warning annotation found in " + unit.getElementName());
-									marker.setAttribute(IMarker.LOCATION, warningAnnotation.getStartPosition());
-								} catch (CoreException e) {
-									logger.error("Exception occured in JDTReviewJob marker addition :", e);
-								}
-							}
-						}
+						markSuppressWarningViolations(unit, astNodeUnit, suppressWarningVisitor);
 					}
 				}
 			} catch (JavaModelException e) {
@@ -85,9 +78,35 @@ public class JDTReviewJob extends Job {
 		return Status.OK_STATUS;
 	}
 
+	private void markSuppressWarningViolations(ICompilationUnit unit, final ASTNode astNodeUnit,
+			SuppressWarningsAnnotationVisitor suppressWarningVisitor) {
+
+		if (suppressWarningVisitor.getWarnings() != null) {
+
+			logger.info(" Suppress Warning violations found in " + unit.getElementName() + " : "
+					+ suppressWarningVisitor.getWarnings().size());
+
+			for (SingleMemberAnnotation warningAnnotation : suppressWarningVisitor.getWarnings()) {
+
+				try {
+					int lineNumber = ((CompilationUnit) astNodeUnit).getLineNumber(warningAnnotation.getStartPosition())
+							- 1;
+
+					IMarker marker = unit.getResource().createMarker(IMarker.MARKER);
+					marker.setAttribute(IMarker.MESSAGE, "Suppress Warning annotation "
+							+ warningAnnotation.getTypeName() + ":" + warningAnnotation.getValue().toString());
+					marker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
+
+				} catch (CoreException e) {
+					logger.error("Exception occured in JDTReviewJob marker addition :", e);
+				}
+			}
+		}
+	}
+
 	/**
 	 * AST Visitor class that enables visit to annotation nodes for checking
-	 * suppress warning occurrences.
+	 * suppress warning occurrences. Records visits with violations into a list.
 	 */
 	class SuppressWarningsAnnotationVisitor extends ASTVisitor {
 

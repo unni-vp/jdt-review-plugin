@@ -19,6 +19,8 @@ import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Handler Class that returns the count of occurrences of the Suppress Warning
@@ -29,6 +31,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
  */
 public class SuppressWarningAnnotationHandler extends AbstractHandler {
 
+	private static final Logger logger = LoggerFactory.getLogger(SuppressWarningAnnotationHandler.class);
+	
 	private static int suppressWarningCount;
 
 	@Override
@@ -58,7 +62,7 @@ public class SuppressWarningAnnotationHandler extends AbstractHandler {
 					}
 				}
 			} catch (JavaModelException e) {
-				System.err.println("Exception occured in SuppressWarningAnnotationHandler execute :" + e.getMessage());
+				logger.error("Exception occured in SuppressWarningAnnotationHandler execute :", e);
 			}
 		}
 

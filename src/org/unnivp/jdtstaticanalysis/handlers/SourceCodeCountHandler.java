@@ -15,6 +15,8 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Handler Class that returns the count of total classes and methods in the
@@ -25,6 +27,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
  */
 public class SourceCodeCountHandler extends AbstractHandler {
 
+	private static final Logger logger = LoggerFactory.getLogger(SourceCodeCountHandler.class);
+	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
@@ -52,7 +56,7 @@ public class SourceCodeCountHandler extends AbstractHandler {
 					}
 				}
 			} catch (JavaModelException e) {
-				System.err.println("Exception occured in SourceCodeCountHandler execute :" + e.getMessage());
+				logger.error("Exception occured in SourceCodeCountHandler execute : ", e);
 			}
 		}
 

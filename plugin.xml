@@ -71,13 +71,13 @@
          </toolbar>
       </menuContribution>
    </extension>
-   
+
    <extension
       point="org.eclipse.ui.views">
       <view
-         	class="org.unnivp.jdtstaticanalysis.markers.JDTReviewMarker"
-         	icon="icons/source_code.gif"
-         	id="JDTReviewMarker"
+         	class="org.unnivp.jdtstaticanalysis.markers.JDTReviewMarkerView"
+         	icon="icons/source_code.png"
+         	id="JDTReviewMarkerView"
          	name="JDT Review Results">
       </view>
    </extension>
