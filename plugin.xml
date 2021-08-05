@@ -2,6 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
 
+   <!-- Defining commands for review tasks -->
    <extension
          point="org.eclipse.ui.commands">
       <category
@@ -20,6 +21,7 @@
       </command>
    </extension>
    
+   <!-- Defining handlers to execute review tasks --> 
    <extension
          point="org.eclipse.ui.handlers">
       <handler
@@ -34,6 +36,8 @@
    
    <extension
          point="org.eclipse.ui.menus">
+         
+      <!-- Creating menu and sub-menu items to invoke review tasks --> 
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu?after=additions">
          <menu
@@ -52,6 +56,8 @@
             </command>
          </menu>
       </menuContribution>
+      
+      <!-- Creating toolbar items to invoke review tasks --> 
       <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
          <toolbar
@@ -71,7 +77,19 @@
          </toolbar>
       </menuContribution>
    </extension>
+   
+   <!-- Creating custom marker to mark the review results --> 
+   <extension
+       id="jdt.review.marker"
+       name="JDT Review Markers"
+       point="org.eclipse.core.resources.markers">
+  			<persistent value="true" />
+  			<super type="org.eclipse.core.resources.textmarker" />
+  			<attribute name="Name" />
+   </extension>
+   
 
+   <!-- Creating new marker view for displaying the review results --> 
    <extension
       point="org.eclipse.ui.views">
       <view
@@ -82,13 +100,21 @@
       </view>
    </extension>
    
+   <!-- Creating support extension for marker view columns --> 
    <extension
       point="org.eclipse.ui.ide.markerSupport">
+      
+       <markerField
+      		class="org.unnivp.jdtstaticanalysis.markers.ProjectField"
+      		id="JDTReview.ProjectField"
+      		name="Project">
+	  </markerField>
+	  
       <markerContentGenerator
             id="JDTReviewMarkerGenerator"
             name="JDT Review Marker Generator">
                   <markerTypeReference
-                         id="org.eclipse.core.resources.marker"/>
+                         id="jdt.review.marker"/>
                   <markerFieldReference
                          id="org.eclipse.ui.ide.descriptionField"/>
                   <markerFieldReference
@@ -98,13 +124,6 @@
          		  <markerFieldReference
          				 id="org.eclipse.ui.ide.locationField"/>
       </markerContentGenerator>
-      
-      <markerField
-      		class="org.unnivp.jdtstaticanalysis.markers.ProjectField"
-      		id="JDTReview.ProjectField"
-      		name="Project">
-	  </markerField>
-
    </extension>
 
 </plugin>

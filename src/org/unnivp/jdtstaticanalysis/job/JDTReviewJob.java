@@ -34,6 +34,8 @@ import org.slf4j.LoggerFactory;
 public class JDTReviewJob extends Job {
 
 	private static final Logger logger = LoggerFactory.getLogger(JDTReviewJob.class);
+	
+	private static final String MARKER_TYPE = "jdt.review.marker";
 
 	public JDTReviewJob(String name) {
 		super(name);
@@ -84,7 +86,7 @@ public class JDTReviewJob extends Job {
 
 	private void deleteExistingMarkers(ICompilationUnit unit) {
 		try {
-			for (IMarker marker : unit.getResource().findMarkers(IMarker.MARKER, true, 1)) {
+			for (IMarker marker : unit.getResource().findMarkers(MARKER_TYPE, true, 1)) {
 				if (((String) marker.getAttribute(IMarker.MESSAGE)).startsWith("Suppress Warning")) {
 					marker.delete();
 				}
@@ -107,7 +109,7 @@ public class JDTReviewJob extends Job {
 				try {
 					int lineNumber = ((CompilationUnit) astNodeUnit).getLineNumber(warningAnnotation.getStartPosition());
 
-					IMarker marker = unit.getResource().createMarker(IMarker.MARKER);
+					IMarker marker = unit.getResource().createMarker(MARKER_TYPE);
 					marker.setAttribute(IMarker.MESSAGE, "Suppress Warning annotation "
 							+ warningAnnotation.getTypeName() + ":" + warningAnnotation.getValue().toString());
 					marker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
