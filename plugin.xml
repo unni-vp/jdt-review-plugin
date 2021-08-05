@@ -5,41 +5,31 @@
    <extension
          point="org.eclipse.ui.commands">
       <category
-            id="org.unnivp.jdtstaticanalysis.commands.JDTReviewCategory"
+            id="JDTReviewCategory"
             name="JDT Review">
       </category>
       <command
-            categoryId="org.unnivp.jdtstaticanalysis.commands.JDTReviewCategory"
-            name="Source Code Stats"
-            id="org.unnivp.jdtstaticanalysis.commands.SourceCountCommand">
+            categoryId="JDTReviewCategory"
+            name="Run JDT Review"
+            id="SourceCountCommand">
       </command>
       <command
-            categoryId="org.unnivp.jdtstaticanalysis.commands.JDTReviewCategory"
+            categoryId="JDTReviewCategory"
             name="Suppress Warning Stats"
-            id="org.unnivp.jdtstaticanalysis.commands.SuppressWarningAnnotationCommand">
+            id="SuppressWarningAnnotationCommand">
       </command>
    </extension>
    
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="org.unnivp.jdtstaticanalysis.handlers.SourceCodeCountHandler"
-            commandId="org.unnivp.jdtstaticanalysis.commands.SourceCountCommand">
+            class="org.unnivp.jdtstaticanalysis.handlers.JDTReviewHandler"
+            commandId="SourceCountCommand">
       </handler>
       <handler
             class="org.unnivp.jdtstaticanalysis.handlers.SuppressWarningAnnotationHandler"
-            commandId="org.unnivp.jdtstaticanalysis.commands.SuppressWarningAnnotationCommand">
+            commandId="SuppressWarningAnnotationCommand">
       </handler>
-   </extension>
-   
-   <extension
-         point="org.eclipse.ui.bindings">
-      <key
-            commandId="org.unnivp.jdtstaticanalysis.commands.JDTReviewBindingCommand"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            contextId="org.eclipse.ui.contexts.window"
-            sequence="M1+6">
-      </key>
    </extension>
    
    <extension
@@ -47,17 +37,17 @@
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu?after=additions">
          <menu
-               id="org.unnivp.jdtstaticanalysis.menus.JDTReviewMenu"
+               id="JDTReviewMenu"
                label="JDT Review"
                mnemonic="M">
             <command
-                  commandId="org.unnivp.jdtstaticanalysis.commands.SourceCountCommand"
-                  id="org.unnivp.jdtstaticanalysis.menus.SourceCountMenuCommand"
+                  commandId="SourceCountCommand"
+                  id="SourceCountMenuItem"
                   mnemonic="C">
             </command>
             <command
-                  commandId="org.unnivp.jdtstaticanalysis.commands.SuppressWarningAnnotationCommand"
-                  id="org.unnivp.jdtstaticanalysis.menus.SuppressWarningAnnotationMenuCommand"
+                  commandId="SuppressWarningAnnotationCommand"
+                  id="SuppressWarningAnnotationMenuItem"
                   mnemonic="S">
             </command>
          </menu>
@@ -65,21 +55,56 @@
       <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
          <toolbar
-               id="org.unnivp.jdtstaticanalysis.toolbars.JDTReviewToolbar">
+               id="JDTReviewToolbar">
             <command
-                  id="org.unnivp.jdtstaticanalysis.toolbars.SourceCountToolbarCommand"
-                  commandId="org.unnivp.jdtstaticanalysis.commands.SourceCountCommand"
+                  id="SourceCountToolbarItem"
+                  commandId="SourceCountCommand"
                   icon="icons/source_code.png"
                   tooltip="Source Code Stats">
             </command>
             <command
-                  id="org.unnivp.jdtstaticanalysis.toolbars.SuppressWarningAnnotationToolbarCommand"
-                  commandId="org.unnivp.jdtstaticanalysis.commands.SuppressWarningAnnotationCommand"
+                  id="SuppressWarningAnnotationToolbarItem"
+                  commandId="SuppressWarningAnnotationCommand"
                   icon="icons/suppress_warning.png"
                   tooltip="Suppress Warning Stats">
             </command>
          </toolbar>
       </menuContribution>
+   </extension>
+   
+   <extension
+      point="org.eclipse.ui.views">
+      <view
+         	class="org.unnivp.jdtstaticanalysis.markers.JDTReviewMarker"
+         	icon="icons/source_code.gif"
+         	id="JDTReviewMarker"
+         	name="JDT Review Results">
+      </view>
+   </extension>
+   
+   <extension
+      point="org.eclipse.ui.ide.markerSupport">
+      <markerContentGenerator
+            id="JDTReviewMarkerGenerator"
+            name="JDT Review Marker Generator">
+                  <markerTypeReference
+                         id="org.eclipse.core.resources.marker"/>
+                  <markerFieldReference
+                         id="org.eclipse.ui.ide.descriptionField"/>
+                  <markerFieldReference
+         				 id="org.eclipse.ui.ide.resourceField"/>
+                  <markerFieldReference
+         				 id="JDTReview.ProjectField"/>
+         		  <markerFieldReference
+         				 id="org.eclipse.ui.ide.locationField"/>
+      </markerContentGenerator>
+      
+      <markerField
+      		class="org.unnivp.jdtstaticanalysis.markers.ProjectField"
+      		id="JDTReview.ProjectField"
+      		name="Project">
+	  </markerField>
+
    </extension>
 
 </plugin>
