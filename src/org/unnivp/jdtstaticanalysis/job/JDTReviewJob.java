@@ -1,7 +1,6 @@
 package org.unnivp.jdtstaticanalysis.job;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.unnivp.jdtstaticanalysis.constants.ReviewConstants.*;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
@@ -19,11 +18,12 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.unnivp.jdtstaticanalysis.constants.ReviewConstants;
+import org.unnivp.jdtstaticanalysis.visitor.SuppressWarningsAnnotationVisitor;
 
 /**
  * Async job to review entire workspace for custom violations.
@@ -34,8 +34,6 @@ import org.slf4j.LoggerFactory;
 public class JDTReviewJob extends Job {
 
 	private static final Logger logger = LoggerFactory.getLogger(JDTReviewJob.class);
-	
-	private static final String MARKER_TYPE = "jdt.review.marker";
 
 	public JDTReviewJob(String name) {
 		super(name);
@@ -64,8 +62,8 @@ public class JDTReviewJob extends Job {
 						parser.setResolveBindings(true);
 						final ASTNode astNodeUnit = parser.createAST(null);
 
-						SuppressWarningsAnnotationVisitor suppressWarningVisitor = new SuppressWarningsAnnotationVisitor();
 						// Visit the annotation nodes to check for suppress warning occurrences.
+						SuppressWarningsAnnotationVisitor suppressWarningVisitor = new SuppressWarningsAnnotationVisitor();
 						astNodeUnit.accept(suppressWarningVisitor);
 						
 						// Clear previous markers.
@@ -85,8 +83,8 @@ public class JDTReviewJob extends Job {
 
 	private void deleteExistingMarkers(ICompilationUnit unit) {
 		try {
-			for (IMarker marker : unit.getResource().findMarkers(MARKER_TYPE, true, 1)) {
-				if (((String) marker.getAttribute(IMarker.MESSAGE)).startsWith("Suppress Warning")) {
+			for (IMarker marker : unit.getResource().findMarkers(ReviewConstants.JDT_REVIEW_MARKER, true, 1)) {
+				if (((String) marker.getAttribute(IMarker.MESSAGE)).startsWith("JDT Review violation")) {
 					marker.delete();
 				}
 			}
@@ -95,7 +93,7 @@ public class JDTReviewJob extends Job {
 		}
 	}
 
-	private void markSuppressWarningViolations(ICompilationUnit unit, final ASTNode astNodeUnit,
+	private void markSuppressWarningViolations(ICompilationUnit unit, ASTNode astNodeUnit,
 			SuppressWarningsAnnotationVisitor suppressWarningVisitor) {
 
 		if (suppressWarningVisitor.getWarnings() != null) {
@@ -108,43 +106,15 @@ public class JDTReviewJob extends Job {
 				try {
 					int lineNumber = ((CompilationUnit) astNodeUnit).getLineNumber(warningAnnotation.getStartPosition());
 
-					IMarker marker = unit.getResource().createMarker(MARKER_TYPE);
-					marker.setAttribute(IMarker.MESSAGE, "Suppress Warning annotation "
-							+ warningAnnotation.getTypeName() + ":" + warningAnnotation.getValue().toString());
+					IMarker marker = unit.getResource().createMarker(JDT_REVIEW_MARKER);
+					marker.setAttribute(IMarker.MESSAGE, "JDT Review violation for : "
+							+ warningAnnotation.getTypeName() + " - " + warningAnnotation.getValue().toString());
 					marker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
 
 				} catch (CoreException e) {
 					logger.error("Exception occured in JDTReviewJob marker addition :", e);
 				}
 			}
-		}
-	}
-
-	/**
-	 * AST Visitor class that enables visit to annotation nodes for checking
-	 * suppress warning occurrences. Records visits with violations into a list.
-	 */
-	class SuppressWarningsAnnotationVisitor extends ASTVisitor {
-
-		private List<SingleMemberAnnotation> warningList = new ArrayList<>();
-
-		public SuppressWarningsAnnotationVisitor() {
-			super();
-		}
-
-		@Override
-		public boolean visit(SingleMemberAnnotation annotationNode) {
-
-			if (annotationNode.getTypeName().toString().equals("SuppressWarnings")) {
-				warningList.add(annotationNode);
-				return true;
-			}
-			return false;
-		}
-
-		public List<SingleMemberAnnotation> getWarnings() {
-
-			return warningList;
 		}
 	}
 

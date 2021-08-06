@@ -1,5 +1,7 @@
 package org.unnivp.jdtstaticanalysis.handlers;
 
+import static org.unnivp.jdtstaticanalysis.constants.ReviewConstants.WINDOW_TITLE;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -62,7 +64,7 @@ public class SourceCodeCountHandler extends AbstractHandler {
 
 		// Populate the results in a new workbench window.
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		MessageDialog.openInformation(window.getShell(), "JDT Review", "Total file count for workspace is : "
+		MessageDialog.openInformation(window.getShell(), WINDOW_TITLE, "Total file count for workspace is : "
 				+ compliationUnitCount + "\nTotal method count for workspace is : " + methodCount);
 
 		return null;

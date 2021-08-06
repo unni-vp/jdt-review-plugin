@@ -71,7 +71,7 @@
             <command
                   id="SourceCountToolbarItem"
                   commandId="SourceCountCommand"
-                  icon="icons/source_code.png"
+                  icon="icons/jdt-review.png"
                   tooltip="Get Workspace Stats">
             </command> 
          </toolbar>
@@ -94,7 +94,7 @@
       point="org.eclipse.ui.views">
       <view
          	class="org.unnivp.jdtstaticanalysis.markers.JDTReviewMarkerView"
-         	icon="icons/source_code.png"
+         	icon="icons/jdt-review.png"
          	id="JDTReviewMarkerView"
          	name="JDT Review Results">
       </view>

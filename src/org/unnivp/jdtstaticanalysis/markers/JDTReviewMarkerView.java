@@ -1,5 +1,7 @@
 package org.unnivp.jdtstaticanalysis.markers;
 
+import static org.unnivp.jdtstaticanalysis.constants.ReviewConstants.MARKER_VIEW_GENERATOR;
+
 import org.eclipse.ui.views.markers.MarkerSupportView;
 
 /**
@@ -12,6 +14,6 @@ public class JDTReviewMarkerView extends MarkerSupportView {
 
 	public JDTReviewMarkerView() {
 
-		super("JDTReviewMarkerGenerator");
+		super(MARKER_VIEW_GENERATOR);
 	}
 }

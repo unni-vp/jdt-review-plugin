@@ -1,5 +1,7 @@
 package org.unnivp.jdtstaticanalysis.handlers;
 
+import static org.unnivp.jdtstaticanalysis.constants.ReviewConstants.*;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -25,11 +27,11 @@ public class JDTReviewHandler extends AbstractHandler {
 		
 		// Notify the user of review start on a new workbench window.
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		MessageDialog.openInformation(window.getShell(), "JDT Review", "Review in Progress. Results will be displayed in the 'JDT Review Results' view.");
+		MessageDialog.openInformation(window.getShell(), WINDOW_TITLE, "Review in Progress. Results will be displayed in the 'JDT Review Results' view.");
 		
 		// Open the JDT Review Results' view.
 		try {
-			window.getActivePage().showView("JDTReviewMarkerView");
+			window.getActivePage().showView(MARKER_VIEW);
 		} catch (PartInitException e) {
 		}
 		
