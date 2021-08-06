@@ -78,7 +78,6 @@ public class JDTReviewJob extends Job {
 			} catch (JavaModelException e) {
 				logger.error("Exception occured in JDTReviewJob execute :", e);
 			}
-
 		}
 
 		return Status.OK_STATUS;
@@ -101,7 +100,7 @@ public class JDTReviewJob extends Job {
 
 		if (suppressWarningVisitor.getWarnings() != null) {
 
-			logger.info(" Suppress Warning violations found in " + unit.getElementName() + " : "
+			logger.info("Suppress Warning violations found in " + unit.getElementName() + " : "
 					+ suppressWarningVisitor.getWarnings().size());
 
 			for (SingleMemberAnnotation warningAnnotation : suppressWarningVisitor.getWarnings()) {
